@@ -5,7 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "docker-build": "NAME=$(node -p 'require(\"./package.json\").name'); VERSION=$(node -p 'require(\"./package.json\").version')-$(git rev-parse --short HEAD); docker kill $NAME-build 2>/dev/null || true; docker rm $NAME-build 2>/dev/null || true; mkdir -p target && rm -f target/slug.tgz; docker build -t $NAME-build --file=docker/build/Dockerfile . && docker run --name $NAME-build $NAME-build && docker cp $NAME-build:/home/app/build/target/slug.tgz target && docker build -t $NAME:$VERSION --file docker/run/Dockerfile .",
+    "docker-run": "echo Port is ${PORT:=3000}; NAME=$(node -p 'require(\"./package.json\").name'); VERSION=$(node -p 'require(\"./package.json\").version')-$(git rev-parse --short HEAD); docker kill $NAME 2>/dev/null || true; docker rm $NAME 2>/dev/null || true; docker run -t -p $PORT:$PORT --env PORT=$PORT --name $NAME $NAME:$VERSION",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "slug": "npm run clean && npm run dist && (cd target/dist && tar czf ../slug.tgz *)",
+    "dist": "mkdir -p target/dist && cp -r lib *.js package.json target/dist && (cd target/dist && rm -rf node_modules && cp -r ../../node_modules . && npm install --production && npm prune --production)",
+    "clean": "rm -rf target/{dist,test-results,slug.tgz}"
   },
   "repository": {
     "type": "git",
