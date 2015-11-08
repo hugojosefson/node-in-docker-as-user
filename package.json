@@ -1,0 +1,26 @@
+{
+  "name": "node-in-docker-as-user",
+  "version": "0.0.0",
+  "description": "Example `Dockerfile` where I use a non-root user for the executing the command.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hugojosefson/node-in-docker-as-user.git"
+  },
+  "keywords": [
+    "docker",
+    "non-root",
+    "user",
+    "node",
+    "nodejs"
+  ],
+  "author": "Hugo Josefson <hugo@josefson.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hugojosefson/node-in-docker-as-user/issues"
+  },
+  "homepage": "https://github.com/hugojosefson/node-in-docker-as-user#readme"
+}
