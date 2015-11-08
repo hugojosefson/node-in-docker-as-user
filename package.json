@@ -4,6 +4,7 @@
   "description": "Example `Dockerfile` where I use a non-root user for the executing the command.",
   "main": "index.js",
   "scripts": {
+    "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/hugojosefson/node-in-docker-as-user/issues"
   },
-  "homepage": "https://github.com/hugojosefson/node-in-docker-as-user#readme"
+  "homepage": "https://github.com/hugojosefson/node-in-docker-as-user#readme",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
 }
