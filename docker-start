@@ -1,0 +1,21 @@
+#!/bin/bash
+
+## Runs the app via Docker
+## Requires that `docker-build` has been run first
+
+# Extract name and version from `package.json` and from git
+: ${NAME:=$(node -p 'require("./package.json").name')}
+: ${VERSION:=$(node -p 'require("./package.json").version')-$(git rev-parse --short HEAD)}
+: ${PORT:=3000}
+
+# Kill any existing runtime
+docker kill $NAME 2>/dev/null || true
+docker rm $NAME 2>/dev/null || true
+
+# Run the app
+docker run \
+    -t \
+    -p $PORT:$PORT \
+    --env PORT=$PORT \
+    --name $NAME \
+    $NAME:$VERSION

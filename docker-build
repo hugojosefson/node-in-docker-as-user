@@ -1,0 +1,24 @@
+#!/bin/bash
+
+## Uses the 'build' Docker image to generate a Docker image for runtime
+
+# Extract name and version from `package.json` and from git
+: ${NAME:=$(node -p 'require("./package.json").name')}
+: ${VERSION:=$(node -p 'require("./package.json").version')-$(git rev-parse --short HEAD)}
+
+# Kill any existing build
+docker kill $NAME-build 2>/dev/null || true
+docker rm $NAME-build 2>/dev/null || true
+
+mkdir -p target
+rm -f target/slug.tgz
+
+# Build the app
+docker build -t $NAME-build --file=docker/build/Dockerfile .
+docker run --name $NAME-build $NAME-build
+
+# Extract the slug from the build
+docker cp $NAME-build:/home/app/build/target/slug.tgz target
+
+# Build the runtime image (extracting the slug.tgz into it)
+docker build -t $NAME:$VERSION --file docker/run/Dockerfile .
