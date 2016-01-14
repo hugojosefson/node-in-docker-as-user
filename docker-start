@@ -9,13 +9,13 @@
 : ${PORT:=3000}
 
 # Kill any existing runtime
-docker kill $NAME 2>/dev/null || true
-docker rm $NAME 2>/dev/null || true
+docker kill $NAME 2>/dev/null 1>&2 || true
+docker rm $NAME 2>/dev/null 1>&2 || true
 
 # Run the app
 docker run \
-    -t \
+    -t -i \
     -p $PORT:$PORT \
-    --env PORT=$PORT \
+    -e "PORT=$PORT" \
     --name $NAME \
     $NAME:$VERSION
